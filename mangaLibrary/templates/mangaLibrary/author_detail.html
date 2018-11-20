@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Author: {{ author.name}}</h1>
+<img src="{{ author.author_image.url }}" alt="img">
+
+<div style="margin-left:20px;margin-top:20px">
+    <h4>Books</h4>
+    
+<!-- book_set.all es un metodo autogenerado por Django! este busca y devuelve la lista de libros que estan asignados a traves de la clase BOOK como Foreign Key en AUTHOR.
+La URL es una llamada a urls de la app para conseguir enlazar con el libro que le corresponde usando la primary key (pk) de las instancias que estamos recorriendo  -->
+    {% for manga in author.manga_set.all %}
+    <hr>
+      <a href="{% url 'manga-detail' manga.pk %}">{{manga.name}}</a>
+      {% if manga.summary != "" %}
+      	<p class="resume">{{ manga.summary }}</p>
+      {% endif %}
+      <!-- A diferencia de arriba, aqui accedo directamente a genero a partir del libro, ya que este es un atributo (pese que es una lista de objetos de la clase genero) -->
+      <p>Categories:{% for genre in manga.genre.all %} {{ genre }}{% if not forloop.last %}, {% endif %}{% endfor %} </p>
+    {% endfor %}
+  </div>
+
+{% endblock %}
